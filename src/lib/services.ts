@@ -14,6 +14,8 @@ export async function RegisterAPI(formData: any) {
 
     } catch (error) {
 
+        console.log(error);
+
         return error;
 
     }
@@ -29,6 +31,8 @@ export async function LoginAPI(formData: any) {
         return response;
 
     } catch (error) {
+
+        console.log(error);
 
         return error;
 
@@ -50,6 +54,123 @@ export async function UserAPI() {
         return response.data;
 
     } catch (error) {
+
+        console.log(error);
+
+        return error;
+
+    }
+
+};
+
+export async function getBooks() {
+
+    try {
+
+        const response = await axios(`${baseURL}/books`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return response.data;
+
+    } catch (error) {
+
+        console.log(error);
+
+        return error;
+
+    }
+
+};
+
+export async function getBook(book: string) {
+
+    try {
+
+        const response = await axios(`${baseURL}/books/${book}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return response.data;
+
+    } catch (error) {
+
+        console.log(error);
+
+        return error;
+
+    }
+
+};
+
+export async function addBook(newBook: any) {
+
+    try {
+
+        const response = await axios.post(`${baseURL}/books`, newBook, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return response.data;
+
+    } catch (error) {
+
+        console.log(error);
+
+        return error;
+
+    }
+
+};
+
+export async function editBooks(id: string, book: any) {
+
+    try {
+
+        const response = await axios.put(`${baseURL}/books/${id}`, book, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return response;
+
+    } catch (error) {
+
+        console.log(error);
+
+        return error;
+
+    }
+
+};
+
+export async function deleteBook(id: string) {
+
+    try {
+
+        const response = await axios.delete(`${baseURL}/books/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return response;
+
+    } catch (error) {
+
+        console.log(error);
 
         return error;
 

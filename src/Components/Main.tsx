@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { UserAPI } from "@/lib/services";
+import Book from "@/Components/Book";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
@@ -59,18 +60,22 @@ const Main = () => {
                     </h1>
                 </div>
             ) : (
-                <div className="flex flex-col justify-center items-center h-screen gap-5">
-                    <h1 className="text-3xl font-semibold">
-                        {user?.firstName} {user?.lastName}
-                    </h1>
+                <>
+                    <div className="flex justify-center items-center my-7 gap-5">
+                        <h1 className="text-3xl font-semibold">
+                            {user?.firstName} {user?.lastName}
+                        </h1>
 
-                    <button
-                        className="bg-white text-black py-2 px-4 text-md font-bold rounded-md"
-                        onClick={Logout}
-                    >
-                        Log Out
-                    </button>
-                </div>
+                        <button
+                            className="bg-white text-black py-2 px-4 text-md font-semibold rounded-md"
+                            onClick={Logout}
+                        >
+                            Log Out
+                        </button>
+                    </div>
+
+                    <Book />
+                </>
             )}
         </>
     )
