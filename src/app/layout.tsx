@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/Components/ThemeProvider";
+import Session from "@/Components/Session";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -18,9 +19,12 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
+          enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Session>
+            {children}
+          </Session>
         </ThemeProvider>
       </body>
     </html>

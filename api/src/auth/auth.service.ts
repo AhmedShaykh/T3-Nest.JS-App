@@ -41,21 +41,24 @@ export class AuthService {
 
     };
 
-    async signToken(userId: string, email: string): Promise<{ access_token: string }> {
+    async signToken(userId: string, email: string): Promise<{ access_token: string, refresh_token: string }> {
 
         const payload = {
             sub: userId,
             email
         };
 
-        const token = await this.jwt.signAsync(payload, {
-            expiresIn: "6d",
+        const access_token = await this.jwt.signAsync(payload, {
+            expiresIn: "15m",
             secret: this.config.get("JWT_SECRET")
         });
 
-        return {
-            access_token: token
-        };
+        const refresh_token = await this.jwt.signAsync(payload, {
+            expiresIn: "7d",
+            secret: this.config.get("JWT_REFRESH_SECRET")
+        });
+
+        return { access_token, refresh_token };
 
     };
 
@@ -84,6 +87,39 @@ export class AuthService {
         }
 
         return this.signToken(user.id, user.email);
+
+    };
+
+    async refreshTokens(refreshToken: string): Promise<{ access_token: string }> {
+
+        let payload: any;
+
+        try {
+
+            payload = await this.jwt.verifyAsync(refreshToken, {
+                secret: this.config.get("JWT_REFRESH_SECRET")
+            });
+
+        } catch (error) {
+
+            throw new UnauthorizedException("Invalid Or Expired Refresh Token.");
+
+        }
+
+        const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+
+        if (!user) {
+
+            throw new UnauthorizedException("User Not Found.");
+
+        }
+
+        const newAccessToken = await this.jwt.signAsync(
+            { sub: user.id, email: user.email },
+            { expiresIn: "15m", secret: this.config.get("JWT_SECRET") }
+        );
+
+        return { access_token: newAccessToken };
 
     };
 

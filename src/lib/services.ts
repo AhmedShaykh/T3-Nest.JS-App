@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
 import axios from "axios";
 
+let baseURL = `http://localhost:8080/api`;
+
 let token = Cookies.get("token");
 
-let baseURL = `http://localhost:8080/api`;
 export async function RegisterAPI(formData: any) {
 
     try {
@@ -40,6 +41,24 @@ export async function LoginAPI(formData: any) {
 
 };
 
+export async function TokenAPI(refresh_token: any) {
+
+    try {
+
+        const response = await axios.post(`${baseURL}/auth/refresh`, { refresh_token });
+
+        return response;
+
+    } catch (error) {
+
+        console.log(error);
+
+        return error;
+
+    }
+
+};
+
 export async function UserAPI() {
 
     try {
@@ -53,11 +72,19 @@ export async function UserAPI() {
 
         return response.data;
 
-    } catch (error) {
+    } catch (error: any) {
 
-        console.log(error);
+        if (error.response) {
 
-        return error;
+            console.log("Error Status Code:", error.response.status);
+
+        } else {
+
+            console.log("Error Message:", error.message);
+
+        }
+
+        throw error;
 
     }
 

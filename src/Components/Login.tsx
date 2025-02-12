@@ -31,7 +31,9 @@ const Login = () => {
 
             const response: any = await LoginAPI(formData);
 
-            Cookies.set("token", response.data.access_token, { expires: 7 });
+            Cookies.set("token", response.data.access_token, { secure: true });
+
+            Cookies.set("refreshToken", response.data.refresh_token, { secure: true });
 
             router.push("/");
 

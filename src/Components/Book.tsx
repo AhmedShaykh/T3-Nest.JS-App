@@ -130,13 +130,12 @@ const Book = () => {
 
             setEditBook(null);
 
-            FetchBook();
-
         } catch (error) {
 
             alert(`Error. ${error}`);
 
         }
+
     };
 
     const deleteBookData = async (id: string) => {
@@ -249,10 +248,11 @@ const Book = () => {
                 </div>
 
                 <ul className="sm:w-9/12 lg:w-5/12 w-full px-4 flex flex-col items-center">
-                    {isLoading &&
+                    {isLoading && (
                         <p className="text-pink-600 text-2xl italic font-medium">
                             Loading...
-                        </p>}
+                        </p>
+                    )}
 
                     {!isLoading && books && books.length === 0 ? (
                         <h1 className="text-red-600 text-2xl font-medium">

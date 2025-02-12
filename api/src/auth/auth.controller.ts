@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { AuthDTO, LoginAuthDTO } from "./DTO/auth.dto";
+import { AuthDTO, LoginAuthDTO, RefreshTokenDTO } from "./DTO/auth.dto";
 import { AuthService } from "./auth.service";
 
 @ApiTags("auth")
@@ -42,6 +42,24 @@ export class AuthController {
     })
     signin(@Body() dto: LoginAuthDTO) {
         return this.authService.signin(dto);
+    };
+
+    @Post("refresh")
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({
+        summary: "Refresh Access Token"
+    })
+    @ApiBody({ type: RefreshTokenDTO })
+    @ApiResponse({
+        status: 200,
+        description: "Access Token Successfully Refreshed"
+    })
+    @ApiResponse({
+        status: 401,
+        description: "Invalid or Expired Refresh Token"
+    })
+    async refreshTokens(@Body("refresh_token") refreshToken: string) {
+        return this.authService.refreshTokens(refreshToken);
     };
 
 };

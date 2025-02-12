@@ -17,7 +17,7 @@ const Main = () => {
 
         FetchProfile();
 
-    }, [])
+    }, []);
 
     const FetchProfile = async () => {
 
@@ -29,9 +29,9 @@ const Main = () => {
 
             setUser(response);
 
-        } catch (error) {
+        } catch (error: any) {
 
-            router.push("/login");
+            console.log(error);
 
         } finally {
 
@@ -45,6 +45,8 @@ const Main = () => {
 
         Cookies.remove("token");
 
+        Cookies.remove("refreshToken");
+
         router.push("/login");
 
         router.refresh();
@@ -53,13 +55,15 @@ const Main = () => {
 
     return (
         <>
-            {isLoading ? (
+            {isLoading && (
                 <div className="flex justify-center items-center h-screen" >
                     <h1 className="text-4xl font-semibold">
                         Loading...
                     </h1>
                 </div>
-            ) : (
+            )}
+
+            {!isLoading && (
                 <>
                     <div className="flex justify-center items-center my-7 gap-5">
                         <h1 className="text-3xl font-semibold">

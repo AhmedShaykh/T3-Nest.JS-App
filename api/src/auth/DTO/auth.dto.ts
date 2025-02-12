@@ -54,3 +54,13 @@ export class LoginAuthDTO {
     })
     password: string;
 };
+
+export class RefreshTokenDTO {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: "TOKEN",
+        required: true
+    })
+    refresh_token: string;
+};
